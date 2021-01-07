@@ -8,11 +8,6 @@ variable "acme_registration_email" {
   description = "The email address to use for registration with the acme provider."
 }
 
-# variable "acme_dns_challenge_provider" {
-#   type        = string
-#   description = "The name of the dns challenge provider to prove domain ownership. The list of valid providers is available here: https://registry.terraform.io/providers/vancluever/acme/latest/docs."
-# }
-
 variable "domain_name" {
   type        = string
   description = "The name of the domain to fetch a certificate for. When using Let's Encrypt, this can be a wildcard domain."
@@ -59,7 +54,6 @@ resource "acme_certificate" "certificate" {
   account_key_pem       = acme_registration.registration.account_key_pem
   common_name           = var.domain_name
   recursive_nameservers = ["8.8.8.8:53", "8.8.4.4:53"]
-  # subject_alternative_names = var.alternate_domain_names
 
   dns_challenge {
     provider = "gcloud"
