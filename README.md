@@ -1,2 +1,3 @@
 # terraform
-General terraform resources useful for many components
+
+Public terraform used in SkyLounge workflows.
