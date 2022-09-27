@@ -1,19 +1,4 @@
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = ">= 3.53, < 5.0"
-    }
-  }
-  backend "gcs" {}
-  required_version = ">= 0.13"
-}
-
-provider "google" {
-  project = var.gcp_project_id
-}
-
-variable "project" {
+variable "gcp_project" {
   type = "string"
 }
 
@@ -29,8 +14,23 @@ variable "cloud_run_location" {
   type = "string"
 }
 
-variable "cloud_run_service" {
+variable "cloud_run_service_name" {
   type = "string"
+}
+
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 3.53, < 5.0"
+    }
+  }
+  backend "gcs" {}
+  required_version = ">= 0.13"
+}
+
+provider "google" {
+  project = var.gcp_project
 }
 
 data "google_dns_managed_zone" "zone" {
