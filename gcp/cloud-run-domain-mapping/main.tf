@@ -1,21 +1,21 @@
 variable "gcp_project" {
-  type = "string"
+  type = string
 }
 
 variable "dns_zone_name" {
-  type = "string"
+  type = string
 }
 
 variable "cloud_run_domain" {
-  type = "string"
+  type = string
 }
 
 variable "cloud_run_location" {
-  type = "string"
+  type = string
 }
 
 variable "cloud_run_service_name" {
-  type = "string"
+  type = string
 }
 
 terraform {
