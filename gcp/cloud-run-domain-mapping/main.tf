@@ -77,6 +77,6 @@ resource "google_dns_record_set" "cname" {
   managed_zone = data.google_dns_managed_zone.zone.name
   type         = "CNAME"
   ttl          = 300
-  rrdatas = [google_cloud_run_domain_mapping.crdm.status.resource_records.rrdata]
+  rrdatas = [google_cloud_run_domain_mapping.crdm.status.resource_records[0].rrdata]
 
 }
