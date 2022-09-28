@@ -77,7 +77,11 @@ resource "google_dns_record_set" "cname" {
   managed_zone = data.google_dns_managed_zone.zone.name
   type         = "CNAME"
   ttl          = 300
-  for_each = google_cloud_run_domain_mapping.crdm.status
-  rrdatas = [each.value.rrdata]
 
+  rrdatas = ["ghs.googlehosted.com."]
+
+}
+
+output "resource_records" {
+  value = google_cloud_run_domain_mapping.crdm.status.resource_records
 }
