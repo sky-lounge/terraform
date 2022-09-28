@@ -78,6 +78,6 @@ resource "google_dns_record_set" "cname" {
   type         = "CNAME"
   ttl          = 300
   for_each = google_cloud_run_domain_mapping.crdm.status
-  rrdatas = [each.resource_records.rrdata]
+  rrdatas = [each.value.rrdata]
 
 }
