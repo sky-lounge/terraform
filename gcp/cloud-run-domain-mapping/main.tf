@@ -54,6 +54,6 @@ resource "google_cloud_run_domain_mapping" "crdm" {
   name     = var.cloud_run_domain
 
   spec {
-    route_name = google_cloud_run_service.crs.name
+    route_name = data.google_cloud_run_service.crs.name
   }
 }
