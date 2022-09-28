@@ -42,12 +42,21 @@ data "google_cloud_run_service" "crs" {
   location = var.cloud_run_location
 }
 
-resource "google_dns_record_set" "a" {
-  name         = "${var.cloud_run_domain}."
-  managed_zone = data.google_dns_managed_zone.zone.name
-  type         = "A"
-  ttl          = 300
-  rrdatas = ["8.8.8.8"]
+data "google_iam_policy" "noauth" {
+  binding {
+    role = "roles/run.invoker"
+    members = [
+      "allUsers",
+    ]
+  }
+}
+
+resource "google_cloud_run_service_iam_policy" "noauth" {
+  location    = data.google_cloud_run_service.crs.location
+  project     = data.google_cloud_run_service.crs.project
+  service     = data.google_cloud_run_service.crs.name
+
+  policy_data = data.google_iam_policy.noauth.policy_data
 }
 
 resource "google_cloud_run_domain_mapping" "crdm" {
@@ -61,4 +70,13 @@ resource "google_cloud_run_domain_mapping" "crdm" {
   spec {
     route_name = data.google_cloud_run_service.crs.name
   }
+}
+
+resource "google_dns_record_set" "cname" {
+  name         = "${var.cloud_run_domain}."
+  managed_zone = data.google_dns_managed_zone.zone.name
+  type         = "CNAME"
+  ttl          = 300
+  rrdatas = [google_cloud_run_domain_mapping.crdm.status.resource_records.rrdata]
+
 }
