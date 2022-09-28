@@ -38,7 +38,7 @@ data "google_dns_managed_zone" "zone" {
 }
 
 data "google_cloud_run_service" "crs" {
-  name     = var.cloud_run_service
+  name     = var.cloud_run_service_name
   location = var.cloud_run_location
 }
 
@@ -47,6 +47,7 @@ resource "google_dns_record_set" "a" {
   managed_zone = data.google_dns_managed_zone.zone.name
   type         = "A"
   ttl          = 300
+  rrdatas = ["8.8.8.8"]
 }
 
 resource "google_cloud_run_domain_mapping" "crdm" {
