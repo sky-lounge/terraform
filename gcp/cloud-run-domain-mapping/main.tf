@@ -52,9 +52,9 @@ data "google_iam_policy" "noauth" {
 }
 
 resource "google_cloud_run_service_iam_policy" "noauth" {
-  location    = data.google_cloud_run_service.crs.location
-  project     = data.google_cloud_run_service.crs.project
-  service     = data.google_cloud_run_service.crs.name
+  location = data.google_cloud_run_service.crs.location
+  project  = data.google_cloud_run_service.crs.project
+  service  = data.google_cloud_run_service.crs.name
 
   policy_data = data.google_iam_policy.noauth.policy_data
 }
@@ -72,16 +72,16 @@ resource "google_cloud_run_domain_mapping" "crdm" {
   }
 }
 
+locals {
+  record = google_cloud_run_domain_mapping.crdm.status.*.resource_records
+  rrdata = one(local.record).*.rrdata[0]
+}
+
 resource "google_dns_record_set" "cname" {
   name         = "${var.cloud_run_domain}."
   managed_zone = data.google_dns_managed_zone.zone.name
   type         = "CNAME"
   ttl          = 300
 
-  rrdatas = ["ghs.googlehosted.com."]
-
-}
-
-output "resource_records" {
-  value = google_cloud_run_domain_mapping.crdm.status[index(google_cloud_run_domain_mapping.crdm.status, "resource_records")]
+  rrdatas = [local.rrdata]
 }
