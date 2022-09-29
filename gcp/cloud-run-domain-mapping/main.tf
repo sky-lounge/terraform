@@ -84,3 +84,4 @@ resource "google_dns_record_set" "cname" {
 
 output "resource_records" {
   value = google_cloud_run_domain_mapping.crdm.status.mapped_route_name
+}
